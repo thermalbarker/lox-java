@@ -32,15 +32,21 @@ public class GenerateAstMojo extends AbstractMojo {
 
         Path outputPath = Paths.get(outputDir).getParent();
         outputPath = outputPath.resolve("generated-sources");
+        outputPath = outputPath.resolve("com");
+        outputPath = outputPath.resolve("craftinginterpreters");
+        outputPath = outputPath.resolve("lox");
+
         getLog().info("Output directory: " + outputPath.toString());
 
         try {
+            // Generate the Ast
             Files.createDirectories(outputPath);
             GenerateAst.defineAst(outputPath.toString());
         } catch (IOException e) {
             throw new MojoExecutionException(e.getMessage());
         }
 
+        // Add the output directory to the compilation path
         project.addCompileSourceRoot(outputPath.toString());
     }
 }
